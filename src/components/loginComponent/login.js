@@ -21,7 +21,6 @@ class Login extends React.Component {
             const payload = token.split('.')[1];
             const decodedPayload = atob(payload);
             console.log(JSON.parse(decodedPayload));
-            console.log(Date.now())
             localStorage.setItem("user", decodedPayload)
         }).catch(error => {
             console.error(error);

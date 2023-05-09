@@ -23,7 +23,6 @@ class AdminDashboard extends React.Component {
                 isAdmin: true
             })
         }
-        console.log(parsed)
     }
 
     render() {
