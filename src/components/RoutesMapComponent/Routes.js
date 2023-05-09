@@ -32,7 +32,18 @@ class RoutesMap extends React.Component {
     };
 
     componentDidMount() {
-        axios.get('http://localhost:8080/api/v1/cars')
+        const curUser = localStorage.getItem("user")
+        const parsed = JSON.parse(curUser)
+        console.log(parsed)
+        let url = 'http://localhost:8080/api/v1/cars'
+        let params = {}
+        if (!parsed.roles.includes('ROLE_ADMIN')) {
+            url = 'http://localhost:8080/api/v1/user/cars'
+            params = {
+                email: parsed.sub
+            }
+        }
+        axios.get(url,{params})
             .then(response => {
                 this.setState({
                     cars: response.data,
@@ -113,6 +124,7 @@ class RoutesMap extends React.Component {
         this.setState({
             show: false
         })
+        window.location.reload()
     }
     handleShow = () => {
         this.setState({

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {Button, Modal} from "react-bootstrap";
+import {Alert, Button, Modal} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
@@ -10,7 +10,15 @@ class Users extends React.Component {
         super(props);
         this.state = {
             users: [],
-            show: false
+            show: false,
+            alert: "",
+            firstname: "",
+            lastname: "",
+            password: "",
+            checkPassword: "",
+            isAdmin: false,
+            email: "",
+            color: 'danger'
         }
     }
 
@@ -26,9 +34,12 @@ class Users extends React.Component {
         });
     }
 
+
     handleClose = () => {
         this.setState({
-            show: false
+            show: false,
+            alert: "",
+            color: 'danger'
         })
     }
     handleShow = () => {
@@ -36,10 +47,86 @@ class Users extends React.Component {
             show: true
         })
     }
+    handleFirstnameChange = (e) => {
+        this.setState({
+            firstname: e.target.value
+        })
+    }
+    handleLastnameChange = (e) => {
+        this.setState({
+            lastname: e.target.value
+        })
+    }
+    handleEmailChange = (e) => {
+        this.setState({
+            email: e.target.value
+        })
+    }
+    handlePasswordChange = (e) => {
+        this.setState({
+            password: e.target.value
+        })
+    }
+    handleCheckPasswordChange = (e) => {
+        this.setState({
+            checkPassword: e.target.value
+        })
+    }
+    handleIsAdminChange = (e) => {
+        this.setState({
+            isAdmin: e.target.value
+        })
+    }
+    handleAddUser = () => {
+        console.log(this.state.password, this.state.checkPassword, this.state.email, this.state.isAdmin)
+        if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.password === "" ||
+            this.state.checkPassword === "") {
+            this.setState({
+                alert: "Fill all fields",
+            })
+            return
+        }
+        if (this.state.password.length < 4) {
+            this.setState({
+                alert: "Password length is short",
+            })
+            return
+        }
+        if (this.state.password !== this.state.checkPassword) {
+            this.setState({
+                alert: "Passwords don't match",
+            })
+            return
+        }
+        const body = {
+            firstname: this.state.firstname,
+            lastname: this.state.lastname,
+            email: this.state.email,
+            password: this.state.password
+        }
+        axios.post('http://localhost:8080/api/v1/user', body)
+            .then(response => {
+                if (response.status === 201) {
+                    this.setState({
+                        alert: "User created",
+                        color: 'success'
+                    })
+                } else {
+                    this.setState({
+                        alert: "User already exists",
+                    })
+                }
+            }).catch(error => {
+            this.setState({
+                alert: "Error in creating user",
+            })
+            console.error(error);
+        })
+    }
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center"} style={{height:"100vh"}}>
+            <div className={"d-flex justify-content-center align-items-center"} style={{height: "100vh"}}>
                 <div>
                     <Table striped bordered hover className={"shadow-lg"}>
                         <thead>
@@ -91,26 +178,43 @@ class Users extends React.Component {
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Firstname</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter firstname"
+                                                  onChange={this.handleFirstnameChange}/>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Lastname</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter lastname"
+                                                  onChange={this.handleLastnameChange}/>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
                                     <Form.Label>Email address</Form.Label>
-                                    <Form.Control type="email" placeholder="Enter email"/>
+                                    <Form.Control type="text" placeholder="Enter email"
+                                                  onChange={this.handleEmailChange}/>
                                     <Form.Text className="text-muted">
                                         We'll never share your email with anyone else.
                                     </Form.Text>
                                 </Form.Group>
 
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Group className="mb-3">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Password"/>
+                                    <Form.Control type="password" placeholder="Password"
+                                                  onChange={this.handlePasswordChange}/>
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                    <Form.Check type="checkbox" label="Check me out"/>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Check password</Form.Label>
+                                    <Form.Control type="password" placeholder="password"
+                                                  onChange={this.handleCheckPasswordChange}/>
                                 </Form.Group>
-
+                                <Form.Group className="mb-3">
+                                    <Form.Check type="checkbox" label="is Admin" onChange={this.handleIsAdminChange}/>
+                                </Form.Group>
                             </Form>
+                            {this.state.alert !== "" && <Alert variant={this.state.color}>{this.state.alert}</Alert>}
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="submit" onClick={this.handleAddUser}>
                                 Submit
                             </Button>
                         </Modal.Footer>

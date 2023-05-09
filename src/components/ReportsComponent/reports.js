@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import {Button} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-class DownloadLink extends React.Component {
+class Reports extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,11 +16,21 @@ class DownloadLink extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/api/v1/cars')
+        const curUser = localStorage.getItem("user")
+        const parsed = JSON.parse(curUser)
+        console.log(parsed)
+        let url = 'http://localhost:8080/api/v1/cars'
+        let params = {}
+        if (!parsed.roles.includes('ROLE_ADMIN')) {
+            url = 'http://localhost:8080/api/v1/user/cars'
+            params = {
+                email: parsed.sub
+            }
+        }
+        axios.get(url, {params})
             .then(response => {
                 this.setState({
                     cars: response.data,
-
                 })
                 console.log(response.data)
             }).catch(error => {
@@ -67,7 +77,7 @@ class DownloadLink extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center"} style={{height:"100vh"}}>
+            <div className={"d-flex justify-content-center align-items-center"} style={{height: "100vh"}}>
                 <div>
                     {
 
@@ -128,4 +138,4 @@ class DownloadLink extends React.Component {
     }
 }
 
-export default DownloadLink;
+export default Reports;

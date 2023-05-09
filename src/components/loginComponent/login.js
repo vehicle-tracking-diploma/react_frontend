@@ -17,10 +17,16 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
         }).then(response => {
-            console.log(response);
+            const token = response.data;
+            const payload = token.split('.')[1];
+            const decodedPayload = atob(payload);
+            console.log(JSON.parse(decodedPayload));
+            console.log(Date.now())
+            localStorage.setItem("user", decodedPayload)
         }).catch(error => {
             console.error(error);
         });
+
     }
 
     emailOnChange = (e) => {
@@ -48,7 +54,7 @@ class Login extends React.Component {
                         <Form.Control type={"password"} placeholder={"Enter password"}
                                       onChange={this.passwordOnChange}></Form.Control>
                     </Form.Group>
-                    <Button className={"mt-3"} variant="outline-primary">Submit</Button>
+                    <Button onClick={this.send} className={"mt-3"} variant="outline-primary">Submit</Button>
                 </Form>
             </div>
         )
