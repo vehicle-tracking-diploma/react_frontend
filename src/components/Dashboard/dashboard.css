@@ -5,6 +5,7 @@
     height: 100vh;
     width: 200px;
     transition: all 0.5s;
+    padding: 10px;
 }
 
 .top_section {
@@ -50,11 +51,20 @@
     .sidebar {
         width: 50px;
     }
+    .icon, .link_text {
+        font-size: 27px;
+    }
     .logo{
         display: none;
     }
     .link_text {
         display: none;
     }
-
+    .icon-wrapper {
+        text-align: center;
+    }
+    .link {
+        display: flex;
+        justify-content: center;
+    }
 }

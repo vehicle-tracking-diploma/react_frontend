@@ -1,14 +1,13 @@
 import React from "react";
-import {NavLink} from "react-bootstrap";
-import  './dashboard.css'
+import {NavLink} from "react-router-dom";
+import './dashboard.css'
 import {
-    FaTh,
-    FaUserAlt,
     FaRegChartBar,
-    FaCommentAlt,
-    FaShoppingBag,
-    FaThList
-}from "react-icons/fa";
+    FaUsers, FaRoute
+} from "react-icons/fa";
+import {BiLogOut} from "react-icons/bi";
+import {FiSettings} from "react-icons/fi";
+
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -35,34 +34,29 @@ class Dashboard extends React.Component {
 
     menuItem = [
         {
+            path: "/users",
+            name: "Users",
+            icon: <FaUsers/>
+        },
+        {
+            path: "/routeMap",
+            name: "Routes history",
+            icon: <FaRoute/>
+        },
+        {
+            path: "/reports",
+            name: "Reports",
+            icon: <FaRegChartBar/>
+        },
+        {
             path: "/",
-            name: "Dashboard",
-            icon:<FaTh/>
+            name: "Change password",
+            icon: <FiSettings/>
         },
         {
-            path: "/about",
-            name: "About",
-            icon:<FaUserAlt/>
-        },
-        {
-            path: "/analytics",
-            name: "Analytics",
-            icon:<FaRegChartBar/>
-        },
-        {
-            path: "/comment",
-            name: "Comment",
-            icon:<FaCommentAlt/>
-        },
-        {
-            path: "/product",
-            name: "Product",
-            icon:<FaShoppingBag/>
-        },
-        {
-            path: "/productList",
-            name: "Product List",
-            icon:<FaThList/>
+            path: "/",
+            name: "Log out",
+            icon: <BiLogOut/>
         }
     ]
 
@@ -76,8 +70,10 @@ class Dashboard extends React.Component {
                     {
                         this.menuItem.map((item, index) => (
                             <NavLink to={item.path} key={index} className="link">
-                                <div className="icon">{item.icon}</div>
-                                <div className="link_text">{item.name}</div>
+                                <div className={"icon-wrapper"}>
+                                    <div className="icon">{item.icon}</div>
+                                    <div className="link_text">{item.name}</div>
+                                </div>
                             </NavLink>
                         ))
                     }

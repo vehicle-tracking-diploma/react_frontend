@@ -4,6 +4,7 @@ import {Alert, Button, Modal} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
+import Dashboard from "../Dashboard/dashboard";
 
 class Users extends React.Component {
     constructor(props) {
@@ -194,57 +195,60 @@ class Users extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center w-100"}>
-                <div className={"w-75"}>
-                    <Table responsive={true} striped bordered hover className={"shadow-lg"}>
-                        <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>firstname</th>
-                            <th>lastname</th>
-                            <th>email</th>
-                            <th>roles</th>
-                            <th>cars</th>
-                            <th>Assign car</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.users.map(user => (
-                                <tr>
-                                    <td>{user.id}</td>
-                                    <td>{user.firstname}</td>
-                                    <td>{user.lastname}</td>
-                                    <td>{user.email}</td>
-                                    <td>{
-                                        <Form.Select>
-                                            {
-                                                user.roles.map(role => (
-                                                    <option>{role.name}</option>
-                                                ))
-                                            }
-                                        </Form.Select>
-                                    }</td>
-                                    <td>
-                                        <Form.Select>
-                                            {
-                                                user.cars.map(car => (
-                                                    <option>{car.govId}</option>
-                                                ))
-                                            }
-                                        </Form.Select>
-                                    </td>
-                                    <td>
-                                        <Button variant="outline-secondary"
-                                                onClick={() => this.setSelectedUser(user.email)}>Assign car</Button>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                        </tbody>
-                    </Table>
-                    <br/>
-                    <Button variant="outline-primary" onClick={this.handleShow}>Add a new user</Button>
+            <div className={"d-flex align-items-center w-100"}>
+                <Dashboard/>
+                <div className={"d-flex justify-content-center w-100"}>
+                    <div className={"w-75"}>
+                        <Table responsive={true} striped bordered hover className={"shadow-lg"}>
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>firstname</th>
+                                <th>lastname</th>
+                                <th>email</th>
+                                <th>roles</th>
+                                <th>cars</th>
+                                <th>Assign car</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                this.state.users.map(user => (
+                                    <tr>
+                                        <td>{user.id}</td>
+                                        <td>{user.firstname}</td>
+                                        <td>{user.lastname}</td>
+                                        <td>{user.email}</td>
+                                        <td>{
+                                            <Form.Select>
+                                                {
+                                                    user.roles.map(role => (
+                                                        <option>{role.name}</option>
+                                                    ))
+                                                }
+                                            </Form.Select>
+                                        }</td>
+                                        <td>
+                                            <Form.Select>
+                                                {
+                                                    user.cars.map(car => (
+                                                        <option>{car.govId}</option>
+                                                    ))
+                                                }
+                                            </Form.Select>
+                                        </td>
+                                        <td>
+                                            <Button variant="outline-secondary"
+                                                    onClick={() => this.setSelectedUser(user.email)}>Assign car</Button>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                        </Table>
+                        <br/>
+                        <Button variant="outline-primary" onClick={this.handleShow}>Add a new user</Button>
+                    </div>
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>Add a new user</Modal.Title>

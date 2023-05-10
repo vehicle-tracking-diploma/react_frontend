@@ -3,6 +3,7 @@ import axios from "axios";
 import Table from 'react-bootstrap/Table';
 import {Button} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import Dashboard from "../Dashboard/dashboard";
 
 class Reports extends React.Component {
     constructor(props) {
@@ -77,61 +78,64 @@ class Reports extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center w-100"}>
-                <div>
-                    {
+            <div className={"d-flex align-items-center w-100"}>
+                <Dashboard/>
+                <div className={"w-100 d-flex justify-content-center"}>
+                    <div>
+                        {
+                            this.state.selectedCar === "" ? (
+                                <p>No car is selected</p>
+                            ) : (
+                                <Table striped bordered hover className={"shadow-lg"}>
+                                    <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>title</th>
+                                        <th>localDateTime</th>
+                                        <th>detail</th>
+                                        <th>Show on the map</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {
+                                        this.state.reports.map(report => (
+                                            <tr>
+                                                <td>{report.id}</td>
+                                                <td>{report.title}</td>
+                                                <td>{report.localDateTime}</td>
+                                                <td>{report.detail}</td>
+                                                <td>
 
-                        this.state.selectedCar === "" ? (
-                            <p>No car is selected</p>
-                        ) : (
-                            <Table striped bordered hover className={"shadow-lg"}>
-                                <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>title</th>
-                                    <th>localDateTime</th>
-                                    <th>detail</th>
-                                    <th>Show on the map</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                                                    <Button variant="outline-secondary"
+                                                            onClick={() => this.goToMap(report.id)}
+                                                            style={{width: "100%", height: "100%"}}>Show
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
+                                    </tbody>
+                                </Table>
+                            )
+                        }
+                        <br/>
+                        <div className={"d-flex"}>
+                            <Form.Select className={"w-25"} onClick={this.handleSelectChange}>
                                 {
-                                    this.state.reports.map(report => (
-                                        <tr>
-                                            <td>{report.id}</td>
-                                            <td>{report.title}</td>
-                                            <td>{report.localDateTime}</td>
-                                            <td>{report.detail}</td>
-                                            <td>
-
-                                                <Button variant="outline-secondary"
-                                                        onClick={() => this.goToMap(report.id)}
-                                                        style={{width: "100%", height: "100%"}}>Show
-                                                </Button>
-                                            </td>
-                                        </tr>
+                                    this.state.cars.map(car => (
+                                        <option>{car.govId}</option>
                                     ))
                                 }
-                                </tbody>
-                            </Table>
-                        )
-                    }
-                    <br/>
-                    <div className={"d-flex"}>
-                        <Form.Select className={"w-25"} onClick={this.handleSelectChange}>
-                            {
-                                this.state.cars.map(car => (
-                                    <option>{car.govId}</option>
-                                ))
-                            }
-                        </Form.Select>
-                        <Button className={"ms-1"} variant="outline-danger" disabled={this.state.disabled}
-                                onClick={() => this.handleClick("pdf")}>Download
-                            pdf</Button>
-                        <Button className={"ms-1"} variant="outline-success" disabled={this.state.disabled}
-                                onClick={() => this.handleClick("xlsx")}>Download excel</Button>
+                            </Form.Select>
+                            <Button className={"ms-1"} variant="outline-danger" disabled={this.state.disabled}
+                                    onClick={() => this.handleClick("pdf")}>Download
+                                pdf</Button>
+                            <Button className={"ms-1"} variant="outline-success" disabled={this.state.disabled}
+                                    onClick={() => this.handleClick("xlsx")}>Download excel</Button>
+                        </div>
+                        <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Selected
+                            car: {this.state.selectedCar}</div>
                     </div>
-                    <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Selected car: {this.state.selectedCar}</div>
                 </div>
             </div>
         )

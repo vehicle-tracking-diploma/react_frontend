@@ -5,12 +5,12 @@ import {
     LoadScript,
     MarkerF
 } from "@react-google-maps/api";
+import Dashboard from "../Dashboard/dashboard";
 
 class ReportMap extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     containerStyle = {
@@ -48,24 +48,27 @@ class ReportMap extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center w-100"}>
-                {
-                    this.state.coordinates !== undefined ? (
-                        <LoadScript
-                            googleMapsApiKey="AIzaSyAkvV72uGI04gRtFVa15c5cIgZw8dfAMs4"
-                        >
-                            <GoogleMap
-                                mapContainerStyle={this.containerStyle}
-                                center={this.center}
-                                zoom={10}
+            <div className={"d-flex align-items-center w-100"}>
+                <Dashboard/>
+                <div className={"w-100 d-flex justify-content-center"}>
+                    {
+                        this.state.coordinates !== undefined ? (
+                            <LoadScript
+                                googleMapsApiKey="AIzaSyAkvV72uGI04gRtFVa15c5cIgZw8dfAMs4"
                             >
-                                <MarkerF position={this.state.coordinates}/>
-                            </GoogleMap>
-                        </LoadScript>
-                    ) : (
-                        <div>Coordinates are not set</div>
-                    )
-                }
+                                <GoogleMap
+                                    mapContainerStyle={this.containerStyle}
+                                    center={this.center}
+                                    zoom={10}
+                                >
+                                    <MarkerF position={this.state.coordinates}/>
+                                </GoogleMap>
+                            </LoadScript>
+                        ) : (
+                            <div>Coordinates are not set</div>
+                        )
+                    }
+                </div>
             </div>
         )
     }

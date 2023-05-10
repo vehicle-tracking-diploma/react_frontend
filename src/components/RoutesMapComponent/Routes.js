@@ -3,6 +3,7 @@ import axios from "axios";
 import {GoogleMap, LoadScript, MarkerF} from "@react-google-maps/api";
 import {Button, Modal} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import Dashboard from "../Dashboard/dashboard";
 
 
 class RoutesMap extends React.Component {
@@ -134,9 +135,10 @@ class RoutesMap extends React.Component {
 
     render() {
         return (
-            <div className={"w-100 bg-light align-items-center d-flex justify-content-center"}>
-                <div className={"w-25"}>
-                    <div>
+            <div className={"d-flex"}>
+                <Dashboard/>
+                <div className={"w-100 d-flex justify-content-center align-items-center "}>
+                    <div className={"w-25"}>
                         <Form>
                             <Form.Select className={"mt-2"} onClick={this.handleSelectChange}>
                                 {

@@ -22,6 +22,7 @@ class Login extends React.Component {
             const decodedPayload = atob(payload);
             console.log(JSON.parse(decodedPayload));
             localStorage.setItem("user", decodedPayload)
+            window.location.href = `http://localhost:3000/reports`
         }).catch(error => {
             console.error(error);
         });
@@ -41,8 +42,9 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center w-100"} >
+            <div className={"d-flex justify-content-center align-items-center w-100"} style={{height: "100vh"}}>
                 <Form className={"w-25"}>
+                    <h1>Login</h1>
                     <Form.Group>
                         <Form.Label>Email address</Form.Label>
                         <Form.Control type={"text"} placeholder={"Enter email"}
