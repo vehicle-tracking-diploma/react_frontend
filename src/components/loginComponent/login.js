@@ -41,7 +41,7 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center"} style={{height: "100vh"}}>
+            <div className={"d-flex justify-content-center align-items-center w-100"} >
                 <Form className={"w-25"}>
                     <Form.Group>
                         <Form.Label>Email address</Form.Label>

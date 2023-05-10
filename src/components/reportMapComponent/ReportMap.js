@@ -48,7 +48,7 @@ class ReportMap extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={"d-flex justify-content-center align-items-center w-100"}>
                 {
                     this.state.coordinates !== undefined ? (
                         <LoadScript

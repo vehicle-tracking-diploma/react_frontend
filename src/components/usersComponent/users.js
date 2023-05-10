@@ -10,6 +10,7 @@ class Users extends React.Component {
         super(props);
         this.state = {
             users: [],
+            cars: [],
             show: false,
             alert: "",
             firstname: "",
@@ -18,7 +19,12 @@ class Users extends React.Component {
             checkPassword: "",
             isAdmin: false,
             email: "",
-            color: 'danger'
+            color: 'danger',
+            showAssign: false,
+            selectedUser: "",
+            selectedCars: [],
+            alertAssign: "",
+            alertAssignColor: 'danger'
         }
     }
 
@@ -28,6 +34,15 @@ class Users extends React.Component {
                 this.setState({
                     users: response.data,
                 })
+            }).catch(error => {
+            console.error(error);
+        });
+        axios.get('http://localhost:8080/api/v1/cars')
+            .then(response => {
+                this.setState({
+                    cars: response.data,
+                })
+                console.log(response.data)
             }).catch(error => {
             console.error(error);
         });
@@ -44,6 +59,23 @@ class Users extends React.Component {
         this.setState({
             show: true
         })
+    }
+    handleCloseAssignCar = () => {
+        this.setState({
+            showAssign: false,
+            selectedCars: []
+        })
+    }
+    handleShowAssignCar = () => {
+        this.setState({
+            showAssign: true
+        })
+    }
+    setSelectedUser = (user) => {
+        this.setState({
+            selectedUser: user
+        })
+        this.handleShowAssignCar()
     }
     handleFirstnameChange = (e) => {
         this.setState({
@@ -75,6 +107,19 @@ class Users extends React.Component {
             isAdmin: e.target.value
         })
     }
+    handleSelectChange = (event) => {
+        const options = event.target.options;
+        const selectedValues = [];
+
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) {
+                selectedValues.push(options[i].value);
+            }
+        }
+        this.setState({
+            selectedCars: selectedValues
+        })
+    };
     handleAddUser = () => {
         console.log(this.state.password, this.state.checkPassword, this.state.email, this.state.isAdmin)
         if (this.state.email === "" || this.state.firstname === "" || this.state.lastname === "" || this.state.password === "" ||
@@ -121,12 +166,37 @@ class Users extends React.Component {
             console.error(error);
         })
     }
+    handleSubmitAssignToUser = () => {
+        if (this.state.selectedCars.length === 0) {
+            this.setState(({
+                alertAssign: "Choose the cars"
+            }))
+        }
+        const body = {
+            email: this.state.selectedUser,
+            govIds: this.state.selectedCars
+        }
+        axios.post('http://localhost:8080/api/v1/assign/car', body)
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({
+                        alertAssign: "Car assigned to user" + this.state.selectedUser,
+                        alertAssignColor: 'success'
+                    })
+                }
+            }).catch(err => {
+            this.setState({
+                alertAssign: "Error in assigning the cars"
+            })
+            console.log(err)
+        })
+    }
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center"} style={{height: "100vh"}}>
-                <div>
-                    <Table striped bordered hover className={"shadow-lg"}>
+            <div className={"d-flex justify-content-center align-items-center w-100"}>
+                <div className={"w-75"}>
+                    <Table responsive={true} striped bordered hover className={"shadow-lg"}>
                         <thead>
                         <tr>
                             <th>id</th>
@@ -135,6 +205,7 @@ class Users extends React.Component {
                             <th>email</th>
                             <th>roles</th>
                             <th>cars</th>
+                            <th>Assign car</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -162,6 +233,10 @@ class Users extends React.Component {
                                                 ))
                                             }
                                         </Form.Select>
+                                    </td>
+                                    <td>
+                                        <Button variant="outline-secondary"
+                                                onClick={() => this.setSelectedUser(user.email)}>Assign car</Button>
                                     </td>
                                 </tr>
                             ))
@@ -206,13 +281,40 @@ class Users extends React.Component {
                                                   onChange={this.handleCheckPasswordChange}/>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Check type="checkbox" label="is Admin" onChange={this.handleIsAdminChange}/>
+                                    <Form.Check type="checkbox" label="is Admin"
+                                                onChange={this.handleIsAdminChange}/>
                                 </Form.Group>
                             </Form>
-                            {this.state.alert !== "" && <Alert variant={this.state.color}>{this.state.alert}</Alert>}
+                            {this.state.alert !== "" &&
+                                <Alert variant={this.state.color}>{this.state.alert}</Alert>}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="primary" type="submit" onClick={this.handleAddUser}>
+                                Submit
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                    <Modal show={this.state.showAssign} onHide={this.handleCloseAssignCar}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Assign car to {this.state.selectedUser}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            {
+                                <Form.Select multiple value={this.state.selectedCars}
+                                             onChange={this.handleSelectChange}>
+                                    {
+                                        this.state.cars.map(car => (
+                                            <option>{car.govId}</option>
+                                        ))
+                                    }
+                                </Form.Select>
+                            }
+                            <p>Selected cars: {this.state.selectedCars.join(', ')}</p>
+                        </Modal.Body>
+                        {this.state.alertAssign !== "" &&
+                            <Alert variant={this.state.alertAssignColor}>{this.state.alertAssign}</Alert>}
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={this.handleSubmitAssignToUser}>
                                 Submit
                             </Button>
                         </Modal.Footer>

@@ -134,9 +134,9 @@ class RoutesMap extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className={"w-100 bg-light align-items-center d-flex justify-content-center"} style={{height: "100vh"}}>
-                    <div className={"w-25"}>
+            <div className={"w-100 bg-light align-items-center d-flex justify-content-center"}>
+                <div className={"w-25"}>
+                    <div>
                         <Form>
                             <Form.Select className={"mt-2"} onClick={this.handleSelectChange}>
                                 {
@@ -146,14 +146,14 @@ class RoutesMap extends React.Component {
                                 }
                             </Form.Select>
                             <Form.Control className={"mt-2"} type={"date"} onChange={this.handleDateChange}/>
-                            <Button className={"mt-2"} variant="outline-primary"
+                            <Button className={"mt-2 w-100"} variant="outline-primary"
                                     onClick={this.handleSubmit}>Submit</Button>
                         </Form>
                         <div>
-                            <div className={"badge bg-primary text-wrap p-3 mt-2"}>Selected
+                            <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Selected
                                 car: {this.state.selectedCar}</div>
                             <br/>
-                            <div className={"badge bg-primary text-wrap p-3 mt-2"}>Selected
+                            <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Selected
                                 date: {this.state.selectedDate}</div>
                         </div>
                         {this.state.routes.length > 0 ? (
@@ -172,9 +172,9 @@ class RoutesMap extends React.Component {
                             </div>
                         ) : (
                             this.state.showNotFound ? (
-                                <div className={"badge bg-primary text-wrap p-3 mt-2"}>Trip not found</div>
+                                <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Trip not found</div>
                             ) : (
-                                <div className={"badge bg-primary text-wrap p-3 mt-2"}>Choose the car and date</div>
+                                <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Choose the car and date</div>
                             )
                         )}
                     </div>

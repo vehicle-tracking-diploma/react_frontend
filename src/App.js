@@ -5,7 +5,8 @@ import ReportMap from "./components/reportMapComponent/ReportMap";
 import RoutesMap from "./components/RoutesMapComponent/Routes";
 import Login from "./components/loginComponent/login";
 import Users from "./components/usersComponent/users";
-import AdminDashboard from "./components/AdminDashboard/adminDashboard";
+import AdminDashboard from "./components/Dashboard/dashboard";
+import Dashboard from "./components/Dashboard/dashboard";
 
 class App extends React.Component {
     constructor(props) {
@@ -15,7 +16,8 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={"d-flex"}>
+                <Dashboard/>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/reportMap" element={<ReportMap/>}/>

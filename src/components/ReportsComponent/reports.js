@@ -77,7 +77,7 @@ class Reports extends React.Component {
 
     render() {
         return (
-            <div className={"d-flex justify-content-center align-items-center"} style={{height: "100vh"}}>
+            <div className={"d-flex justify-content-center align-items-center w-100"}>
                 <div>
                     {
 
@@ -131,7 +131,7 @@ class Reports extends React.Component {
                         <Button className={"ms-1"} variant="outline-success" disabled={this.state.disabled}
                                 onClick={() => this.handleClick("xlsx")}>Download excel</Button>
                     </div>
-                    <div className={"badge bg-primary text-wrap p-3 mt-2"}>Selected car: {this.state.selectedCar}</div>
+                    <div className={"badge bg-primary text-wrap p-3 mt-2 w-100"}>Selected car: {this.state.selectedCar}</div>
                 </div>
             </div>
         )
